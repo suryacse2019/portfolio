@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 
-const PROFILE_IMG =  'public/profile-img.webp';
+const PROFILE_IMG =  '/profile-img.webp';
 
 
 const skills = [
