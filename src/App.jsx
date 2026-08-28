@@ -259,6 +259,7 @@ function TerminalHero() {
 
   return (
     <div
+      className="terminal-hero"
       style={{
         background: C.panel,
         border: `1px solid ${C.line}`,
@@ -277,13 +278,13 @@ function TerminalHero() {
           Suraj
         </span>
       </div>
-      <div style={{ padding: "20px 20px 24px", fontFamily: "'JetBrains Mono', monospace", fontSize: 13, lineHeight: 1.9, minHeight: 190 }}>
+      <div className="terminal-body" style={{ padding: "20px 20px 24px", fontFamily: "'JetBrains Mono', monospace", fontSize: 13, lineHeight: 1.9, minHeight: 190 }}>
         {TERMINAL_LINES.slice(0, shown).map((l, i) => (
           <div key={i} style={{ marginBottom: 8, animation: "fadeInUp 0.35s ease forwards" }}>
-            <div style={{ color: C.muted }}>
+            <div style={{ color: C.muted, wordBreak: "break-word" }}>
               <span style={{ color: C.signal }}>❯</span> {l.cmd}
             </div>
-            <div style={{ color: C.paper, paddingLeft: 16 }}>{l.out}</div>
+            <div style={{ color: C.paper, paddingLeft: 16, wordBreak: "break-word" }}>{l.out}</div>
           </div>
         ))}
         <span style={{ color: C.signal }}>❯</span>{" "}
@@ -350,6 +351,7 @@ export default function Portfolio() {
         html, body { width: 100%; margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         #root, #app { width: 100%; }
+        img { max-width: 100%; }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
         @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
         .nav-link { color: ${C.mutedDim}; transition: color 0.2s; }
@@ -363,6 +365,7 @@ export default function Portfolio() {
         .btn-outline:hover { border-color: ${C.signal} !important; color: ${C.signal} !important; }
         ::-webkit-scrollbar { width:6px } ::-webkit-scrollbar-track{background:${C.ink}} ::-webkit-scrollbar-thumb{background:${C.signal};border-radius:3px}
         @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
         .desktop-nav-links, .desktop-nav-actions { display: flex; }
         .mobile-menu-btn { display: none; }
         .mobile-menu-panel { display: none; max-height: 0; overflow: hidden; }
@@ -371,6 +374,45 @@ export default function Portfolio() {
           .desktop-nav-links { display: none !important; }
           .desktop-nav-actions { display: none !important; }
           .mobile-menu-btn { display: flex !important; }
+        }
+
+        /* ---------- RESPONSIVE LAYOUT ---------- */
+        .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; margin-top: 32px; align-items: start; }
+        .about-side { display: flex; flex-direction: column; gap: 14px; }
+        .stats-row { display: flex; gap: 22px; flex-wrap: wrap; }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+        .contact-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 44px; }
+
+        @media (max-width: 860px) {
+          .about-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .about-side { flex-direction: column-reverse; }
+        }
+
+        @media (max-width: 768px) {
+          .section-pad { padding: 64px 20px !important; }
+          .hero-pad { padding: 118px 20px 56px !important; }
+          .hero-row { gap: 40px !important; }
+          .hero-text { min-width: 0 !important; }
+          .card-pad { padding: 20px !important; }
+        }
+
+        @media (max-width: 480px) {
+          .section-pad { padding: 48px 16px !important; }
+          .hero-pad { padding: 104px 16px 48px !important; }
+          .hero-row { gap: 32px !important; }
+          .stats-row { gap: 14px 22px !important; }
+          .terminal-hero { max-width: 100% !important; }
+          .terminal-body { padding: 16px 16px 20px !important; font-size: 12px !important; min-height: unset !important; }
+          .hero-actions { flex-direction: column; align-items: stretch; }
+          .hero-actions a, .hero-actions button { width: 100%; text-align: center; justify-content: center; }
+          .contact-actions { flex-direction: column; align-items: stretch; }
+          .contact-actions a, .contact-actions button { width: 100%; text-align: center; justify-content: center; }
+          .about-image-wrap { max-width: 220px !important; margin: 0 auto; }
+          .footer-pad { padding: 18px 16px !important; }
+        }
+
+        @media (max-width: 380px) {
+          .stats-row > div { min-width: 42%; }
         }
       `}</style>
 
@@ -389,7 +431,7 @@ export default function Portfolio() {
           transition: "background 0.3s ease, border-color 0.3s ease",
         }}
       >
-        <div style={{ maxWidth: 1120, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 24px" }}>
+        <div style={{ maxWidth: 1120, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 20px" }}>
           {/* logo */}
           <button
             onClick={() => scrollTo("home")}
@@ -572,15 +614,15 @@ export default function Portfolio() {
             background: "radial-gradient(ellipse 70% 55% at 82% 30%, rgba(255,138,61,0.07) 0%, transparent 70%)",
           }}
         />
-        <div style={{ ...styles.section, paddingTop: 100, display: "flex", alignItems: "center", gap: 56, flexWrap: "wrap", position: "relative" }}>
-          <div style={{ flex: 1, minWidth: 300 }}>
+        <div className="hero-pad hero-row" style={{ ...styles.section, paddingTop: 100, display: "flex", alignItems: "center", gap: 56, flexWrap: "wrap", position: "relative" }}>
+          <div className="hero-text" style={{ flex: 1, minWidth: 300 }}>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", color: C.signal, fontSize: 13, marginBottom: 18, letterSpacing: 0.5 }}>
               Available For Work
             </div>
-            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(38px,6vw,60px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 18 }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(38px,9vw,60px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 18 }}>
               Suraj Yadav
             </h1>
-            <p style={{ fontSize: "clamp(16px,2vw,19px)", color: C.circuit, fontWeight: 600, marginBottom: 16, fontFamily: "'JetBrains Mono', monospace" }}>
+            <p style={{ fontSize: "clamp(16px,4vw,19px)", color: C.circuit, fontWeight: 600, marginBottom: 16, fontFamily: "'JetBrains Mono', monospace" }}>
               Full Stack Developer — Laravel · Node.js · React
             </p>
             <p style={{ color: C.muted, lineHeight: 1.75, fontSize: 16, maxWidth: 460, marginBottom: 34 }}>
@@ -588,7 +630,7 @@ export default function Portfolio() {
               architecture to responsive interfaces. Shipped systems across government, healthcare, e-commerce and
               SaaS, with hands-on AI feature development using OpenAI, Claude and Gemini.
             </p>
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 40 }}>
+            <div className="hero-actions">
               <a
                 href={RESUME_PDF}
                 download={RESUME_FILENAME}
@@ -607,7 +649,7 @@ export default function Portfolio() {
                 Get In Touch
               </button>
             </div>
-            <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+            <div className="stats-row">
               {stats.map(([num, label]) => (
                 <div key={label}>
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: C.paper }}>{num}</div>
@@ -617,7 +659,7 @@ export default function Portfolio() {
             </div>
           </div>
 
-          <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+          <div style={{ flexShrink: 0, width: "100%", maxWidth: 480, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
             <TerminalHero />
             <div style={{ display: "flex", gap: 12 }}>
               {socials.map((s) => (
@@ -650,10 +692,10 @@ export default function Portfolio() {
 
       {/* ABOUT */}
       <section id="about" style={{ background: C.panelAlt, borderTop: `1px solid ${C.line}`, borderBottom: `1px solid ${C.line}` }}>
-        <div style={styles.section}>
+        <div className="section-pad" style={styles.section}>
           <Eyebrow>About</Eyebrow>
           <h2 style={styles.h2}>Who I am</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 48, marginTop: 32, alignItems: "start" }}>
+          <div className="about-grid">
             <div>
               <p style={{ color: C.muted, lineHeight: 1.9, fontSize: 15.5, marginBottom: 18 }}>
                 I'm a <strong style={{ color: C.paper }}>Full Stack Developer</strong> based in New Delhi, with over 4
@@ -679,8 +721,8 @@ export default function Portfolio() {
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              <div style={{ position: "relative", width: "100%", maxWidth: 260 }}>
+            <div className="about-side">
+              <div className="about-image-wrap" style={{ position: "relative", width: "100%", maxWidth: 260 }}>
                 <span style={{ position: "absolute", top: -6, left: -6, width: 20, height: 20, borderTop: `2px solid ${C.signal}`, borderLeft: `2px solid ${C.signal}` }} />
                 <span style={{ position: "absolute", top: -6, right: -6, width: 20, height: 20, borderTop: `2px solid ${C.signal}`, borderRight: `2px solid ${C.signal}` }} />
                 <span style={{ position: "absolute", bottom: -6, left: -6, width: 20, height: 20, borderBottom: `2px solid ${C.signal}`, borderLeft: `2px solid ${C.signal}` }} />
@@ -690,16 +732,18 @@ export default function Portfolio() {
                 </div>
               </div>
 
-              {[
-                ["Location", "New Delhi, India"],
-                ["Experience", "4+ Years Professional"],
-                ["Education", "B.Tech CS, AKTU · 2025"],
-              ].map(([label, val]) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", borderBottom: `1px solid ${C.line}`, paddingBottom: 8 }}>
-                  <span style={{ color: C.mutedDim, fontSize: 12.5, fontFamily: "'JetBrains Mono', monospace" }}>{label}</span>
-                  <span style={{ color: C.paper, fontSize: 13.5, fontWeight: 500 }}>{val}</span>
-                </div>
-              ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {[
+                  ["Location", "New Delhi, India"],
+                  ["Experience", "4+ Years Professional"],
+                  ["Education", "B.Tech CS, AKTU · 2025"],
+                ].map(([label, val]) => (
+                  <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 12, borderBottom: `1px solid ${C.line}`, paddingBottom: 8 }}>
+                    <span style={{ color: C.mutedDim, fontSize: 12.5, fontFamily: "'JetBrains Mono', monospace" }}>{label}</span>
+                    <span style={{ color: C.paper, fontSize: 13.5, fontWeight: 500, textAlign: "right" }}>{val}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -707,12 +751,12 @@ export default function Portfolio() {
 
       {/* SKILLS */}
       <section id="skills" ref={skillsRef}>
-        <div style={styles.section}>
+        <div className="section-pad" style={styles.section}>
           <Eyebrow>Skills</Eyebrow>
           <h2 style={styles.h2}>My expertise</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24, marginTop: 40 }}>
             {skillGroups.map((group, gi) => (
-              <div key={group.title} style={{ ...styles.card }}>
+              <div key={group.title} className="card-pad" style={{ ...styles.card }}>
                 <h3 style={{ fontFamily: "'JetBrains Mono', monospace", color: C.signal, marginBottom: 20, fontSize: 13, letterSpacing: 0.5, textTransform: "uppercase" }}>
                   {group.title}
                 </h3>
@@ -737,13 +781,13 @@ export default function Portfolio() {
 
       {/* EXPERIENCE */}
       <section id="experience" style={{ background: C.panelAlt, borderTop: `1px solid ${C.line}`, borderBottom: `1px solid ${C.line}` }}>
-        <div style={styles.section}>
+        <div className="section-pad" style={styles.section}>
           <Eyebrow>Experience</Eyebrow>
           <h2 style={styles.h2}>Work history</h2>
           <div style={{ marginTop: 40, position: "relative" }}>
             <div style={{ position: "absolute", left: 5, top: 8, bottom: 8, width: 1, background: C.line }} />
             {experience.map((exp, i) => (
-              <div key={i} style={{ display: "flex", gap: 28, marginBottom: 32 }}>
+              <div key={i} style={{ display: "flex", gap: 20, marginBottom: 32 }}>
                 <div style={{ flexShrink: 0, paddingTop: 6 }}>
                   <div
                     style={{
@@ -755,7 +799,7 @@ export default function Portfolio() {
                     }}
                   />
                 </div>
-                <div className="card-hover" style={{ ...styles.card, flex: 1 }}>
+                <div className="card-hover card-pad" style={{ ...styles.card, flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
                     <div>
                       <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", color: C.paper, fontWeight: 700, fontSize: 18 }}>{exp.role}</h3>
@@ -795,15 +839,15 @@ export default function Portfolio() {
 
       {/* PROJECTS */}
       <section id="projects">
-        <div style={styles.section}>
+        <div className="section-pad" style={styles.section}>
           <Eyebrow>Projects</Eyebrow>
           <h2 style={styles.h2}>Featured work</h2>
           <p style={{ color: C.mutedDim, marginBottom: 40, fontSize: 14.5 }}>5 of 20+ delivered projects</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 22 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 22 }}>
             {projects.map((p) => (
               <div
                 key={p.name}
-                className="card-hover"
+                className="card-hover card-pad"
                 style={{ ...styles.card, cursor: p.url ? "pointer" : "default" }}
                 onClick={() => p.url && window.open(`https://${p.url}`, "_blank")}
               >
@@ -824,7 +868,7 @@ export default function Portfolio() {
                   >
                     {p.icon}
                   </div>
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", color: C.paper, fontWeight: 700, fontSize: 15.5 }}>{p.name}</h3>
                     {p.url ? (
                       <a
@@ -853,7 +897,7 @@ export default function Portfolio() {
             ))}
 
             {/* Education / Certifications card fills the grid */}
-            <div style={{ ...styles.card, display: "flex", flexDirection: "column", gap: 16 }}>
+            <div className="card-pad" style={{ ...styles.card, display: "flex", flexDirection: "column", gap: 16 }}>
               <h3 style={{ fontFamily: "'JetBrains Mono', monospace", color: C.signal, fontSize: 13, letterSpacing: 0.5, textTransform: "uppercase" }}>
                 Education & Certs
               </h3>
@@ -878,7 +922,7 @@ export default function Portfolio() {
 
       {/* CONTACT */}
       <section id="contact" style={{ background: C.panelAlt, borderTop: `1px solid ${C.line}` }}>
-        <div style={styles.section}>
+        <div className="section-pad" style={styles.section}>
           <Eyebrow>// contact</Eyebrow>
           <h2 style={styles.h2}>Let's connect</h2>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 24px", marginTop: 14, marginBottom: 6 }}>
@@ -893,7 +937,7 @@ export default function Portfolio() {
               </div>
             ))}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20, marginTop: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20, marginTop: 40 }}>
             {[
               { icon: "📧", label: "Email", val: "dev.suraj.cse@gmail.com", href: "mailto:dev.suraj.cse@gmail.com" },
               { icon: "📞", label: "Phone", val: "+91 7518141123", href: "tel:+917518141123" },
@@ -904,20 +948,20 @@ export default function Portfolio() {
                 href={c.href}
                 target="_blank"
                 rel="noreferrer"
-                className="card-hover"
-                style={{ ...styles.card, textDecoration: "none", display: "flex", gap: 16, alignItems: "center" }}
+                className="card-hover card-pad"
+                style={{ ...styles.card, textDecoration: "none", display: "flex", gap: 16, alignItems: "center", minWidth: 0 }}
               >
-                <div style={{ fontSize: 26 }}>{c.icon}</div>
-                <div>
+                <div style={{ fontSize: 26, flexShrink: 0 }}>{c.icon}</div>
+                <div style={{ minWidth: 0 }}>
                   <div style={{ color: C.mutedDim, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     {c.label}
                   </div>
-                  <div style={{ color: C.paper, fontWeight: 600, fontSize: 14, marginTop: 3 }}>{c.val}</div>
+                  <div style={{ color: C.paper, fontWeight: 600, fontSize: 14, marginTop: 3, wordBreak: "break-word" }}>{c.val}</div>
                 </div>
               </a>
             ))}
           </div>
-          <div style={{ textAlign: "center", marginTop: 44, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+          <div className="contact-actions">
             <button className="btn-primary" style={{ ...styles.btnPrimary, fontSize: 15, padding: "15px 36px" }} onClick={() => window.open("mailto:dev.suraj.cse@gmail.com")}>
               Send Me a Message →
             </button>
@@ -937,7 +981,7 @@ export default function Portfolio() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: `1px solid ${C.line}`, padding: "22px", textAlign: "center", color: C.mutedDim, fontSize: 12.5, fontFamily: "'JetBrains Mono', monospace" }}>
+      <footer className="footer-pad" style={{ borderTop: `1px solid ${C.line}`, padding: "22px", textAlign: "center", color: C.mutedDim, fontSize: 12.5, fontFamily: "'JetBrains Mono', monospace" }}>
         built by Suraj Yadav — Full Stack Developer, New Delhi
       </footer>
     </div>
